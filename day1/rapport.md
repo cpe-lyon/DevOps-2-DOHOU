@@ -1,5 +1,5 @@
 # DevOps 2 - Medhy DOHOU - IRC 2025
-Lien github : 
+Lien github : https://github.com/cpe-lyon/DevOps-2-DOHOU/tree/day1
 ## Jour 1
 
 ### Quelles sont les informations que l'on retrouve dans ce fichier ?
