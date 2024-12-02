@@ -1,0 +1,15 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: hpa
+  namespace: medhy-dohou
+spec:
+  selector:
+    app: hpa
+  ports:
+  - name: hpa
+    protocol: TCP
+    port: 80
+    targetPort: 80
+---

@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: hello.medhy-dohou.cpe.takima.school
+      http:
+        paths:
+          - backend:
+              service:
+                name: hello-service
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+  - hosts: 
+    - hello.medhy-dohou.cpe.takima.school
+    secretName: app-wildcard

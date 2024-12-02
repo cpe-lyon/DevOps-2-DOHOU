@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hpa
+  namespace: medhy-dohou
+  labels:
+    app: hpa
+spec:
+  selector:
+    matchLabels:
+      app: hpa
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: hpa
+    spec:
+      imagePullSecrets:
+      - name: takima-school-registry
+      containers:
+        - name: hpa
+          image: registry.gitlab.com/takima-school/images/hpa:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 200m
+            limits:
+              cpu: 500m
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                - eu-west-3a
+---

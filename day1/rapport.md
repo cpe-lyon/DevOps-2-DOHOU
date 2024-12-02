@@ -1,4 +1,5 @@
 # DevOps 2 - Medhy DOHOU - IRC 2025
+Lien github : 
 ## Jour 1
 
 ### Quelles sont les informations que l'on retrouve dans ce fichier ?
@@ -265,3 +266,44 @@ replicaset.apps/unicorn-front-deployment-84f96bbc4f   0         0         0     
 ```
 
 Les pods sont bien mis à jour, un nouveau déploiement est crée.
+
+### Etape 2 
+
+#### Mise en situation : Que se passe-t-il ? Pourquoi ?
+
+```
+🐈 medhy 14:02:22 12/02/24  🏚️  😸  kubectlget all
+NAME                         READY   STATUS             RESTARTS   AGE
+pod/hello-79d6647d94-h7wtd   0/1     ImagePullBackOff   0          41s
+pod/hello-79d6647d94-sgmcd   0/1     ErrImagePull       0          41s
+pod/hello-79d6647d94-zx2p9   0/1     ErrImagePull       0          41s
+
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/hello   0/3     3            0           41s
+
+NAME                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/hello-79d6647d94   3         3         0       41s
+```
+
+On a bien crée un déploiement qui a créer un replicaset qui à lui même crée 3 pods différents. Cependant ces 3 pods ne peuvent démarrer car ils n'ont pas de credentials pour le registre gitlab.
+
+#### Décrivez ce que répond la Web App ? Actualisez votre page avec CTRL + F5. Que se passe-t-il ?
+
+On remarque que l'on navigue entre 3 pages de couleurs différentes des lors que nous rafraichissons avec CTRL+F5
+
+#### Que constatez-vous sur le navigateur ?
+
+On remarque que l'on a une sticky session avec un des 3 pods tant que l'on ne fait pas un refresh avec vidage du cache (CTRL+F5). Cela est confirmé par l'adresse du noeud qui change entre chaque refresh.
+
+#### Bonus 3 : Observez ce qu'il se passe. Que constatez-vous ?
+
+On observe que dès lors que l'on passe la barre des 50%, l'HPA démarre un nouveau pod afin de tenir la charge et de s'assurer que la charge individuelle CPU d'un Pod ne dépasse pas 50%. Dans notre test, le nombre de pods se stabilise à 6.
+
+#### Bonus 4 : Que constatez-vous ?
+
+On constate un timeout au niveau du WGET : la nouvelle network policy bloque le trafic qui ne provient pas de pod avec le label access=true
+
+#### Bonus 5 : Qu'est ce qu'une availability zone ?
+
+Une zone de disponibilité ou AZ/Availability Zone, c'est une zone d'infrastructure détachées des autres en tout point critique (réseau, electrique, matériel, physique). Les AZ sont généralement libéllé par des datacenter (eu-west par exemple) et un numéro de salle (eu-west-3 par exemple).
+
