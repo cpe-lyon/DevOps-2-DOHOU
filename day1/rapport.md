@@ -17,6 +17,8 @@ On retrouve dans ce fichier de configuration plusieurs informations :
 Error from server (Forbidden): pods is forbidden: User "system:serviceaccount:tech:medhy-dohou" cannot list resource "pods" in API group "" in the namespace "default"
 ```
 
+Notre compte utilisateur n'a pas les droits nécessaires pour accéder au namespace dafault
+
 ### Etape 1
 #### Quelles sont les propriétés principales que l'on retrouve dans le fichier yaml de description du pod ?
 
@@ -306,4 +308,3 @@ On constate un timeout au niveau du WGET : la nouvelle network policy bloque le 
 #### Bonus 5 : Qu'est ce qu'une availability zone ?
 
 Une zone de disponibilité ou AZ/Availability Zone, c'est une zone d'infrastructure détachées des autres en tout point critique (réseau, electrique, matériel, physique). Les AZ sont généralement libéllé par des datacenter (eu-west par exemple) et un numéro de salle (eu-west-3 par exemple).
-
