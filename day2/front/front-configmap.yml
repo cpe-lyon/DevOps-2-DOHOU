@@ -1,0 +1,9 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: front-config
+  namespace: medhy-dohou
+data:
+  API_URL: https://api.medhy-dohou.cpe.takima.school
+---

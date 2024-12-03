@@ -1,0 +1,24 @@
+# https://kubernetes.io/docs/concepts/services-networking/ingress/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: front-ingress
+  namespace: medhy-dohou
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: front.medhy-dohou.cpe.takima.school
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: front-service
+            port:
+              number: 80
+  tls:
+  - hosts: 
+    - front.medhy-dohou.cpe.takima.school
+    secretName: app-wildcard
+---

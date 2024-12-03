@@ -1,0 +1,15 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-service
+  namespace: medhy-dohou
+spec:
+  selector:
+    app: front
+  ports:
+  - name: front-port
+    protocol: TCP
+    port: 80
+    targetPort: front-port
+---

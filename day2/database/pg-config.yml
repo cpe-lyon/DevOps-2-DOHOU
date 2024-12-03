@@ -1,0 +1,10 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: database-config
+  namespace: medhy-dohou
+data:
+  POSTGRES_DB: cdb
+  db_path: /var/lib/postgresql/data/pgdata
+---

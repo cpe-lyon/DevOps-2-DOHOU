@@ -1,0 +1,46 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front
+  namespace: medhy-dohou
+  labels:
+    app: front
+spec:
+  selector:
+    matchLabels:
+      app: front
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: front
+    spec:
+      imagePullSecrets:
+      - name: takima-school-registry
+      containers:
+      - name: front
+        image: registry.gitlab.com/takima-school/images/cdb/www:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 1
+            memory: 256Mi
+        env:
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: front-config
+              key: API_URL
+        ports:
+        - containerPort: 8080
+          name: front-port
+---

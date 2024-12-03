@@ -1,0 +1,16 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-service
+  namespace: medhy-dohou
+spec:
+  selector:
+    app: database
+  type: ClusterIP
+  ports:
+  - name: database-port
+    protocol: TCP
+    port: 5432
+    targetPort: database-port
+---

@@ -1,0 +1,66 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: database-statefulset
+  namespace: medhy-dohou
+spec:
+  selector:
+    matchLabels:
+      app: database # has to match .spec.template.metadata.labels
+  serviceName: "database-service"
+  replicas: 3 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: database # has to match .spec.selector.matchLabels
+    spec:
+      containers:
+      - name: database
+        image: registry.takima.io/school/proxy/postgres:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5432
+          name: database-port
+        volumeMounts:
+        - name: database-data
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 1
+            memory: 256Mi
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: database-config
+              key: POSTGRES_DB
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: POSTGRES_PASSWORD
+        - name: PGDATA
+          valueFrom:
+            configMapKeyRef:
+              name: database-config
+              key: db_path
+
+  volumeClaimTemplates:
+  - metadata:
+      name: database-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+---
