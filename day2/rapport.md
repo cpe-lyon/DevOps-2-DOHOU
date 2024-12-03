@@ -1,5 +1,5 @@
 # Day 2 - DevOps 2 - Medhy DOHOU - IRC 2025
-
+Lien github : https://github.com/cpe-lyon/DevOps-2-DOHOU/tree/day2
 ## Déployer l'API
 
 ### Que se passe-t-il au niveau des pods de l'API ?
