@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kibana-ingress
+  namespace: medhy-dohou
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+spec:
+  rules:
+  - host: kibana.medhy-dohou.cpe.takima.school
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: medhy-dohou-kibana-kb-http
+            port: 
+              name: https
+  tls:
+  - hosts: 
+    - front.medhy-dohou.cpe.takima.school
+    secretName: app-wildcard
