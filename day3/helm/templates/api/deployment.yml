@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    checksum/config: {{ include (print $.Template.BasePath "/api/configmap.yml") . | sha256sum }}
   name: {{ .Values.name }}-api-deployment
   namespace: medhy-dohou
   labels:

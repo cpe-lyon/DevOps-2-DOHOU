@@ -2,6 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/pg/configmap.yml") . | sha256sum }}
+    checksum/credentials: {{ include (print $.Template.BasePath "/pg/credentials.yml") . | sha256sum }}
   name:  {{ .Values.name }}-database-deployment
   namespace: medhy-dohou
   labels:

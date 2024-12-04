@@ -2,11 +2,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/front/configmap.yaml") . | sha256sum }}
   name: {{ .Values.name }}-front-deployment
   labels:
     app: {{ .Values.name }}-front
 spec:
-  replicas: {{ .Values.front.replicaCount }}
+  replicas: {{ .Values.front.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.name }}-front
