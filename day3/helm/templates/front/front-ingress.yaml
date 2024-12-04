@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
- name: {{ .Values.name }}-front
+ name: {{ .Values.name }}-front-ingress
 spec:
   ingressClassName: nginx
   rules:
@@ -11,9 +11,9 @@ spec:
       paths:
       - backend:
           service:
-            name: {{ .Values.name }}-front
+            name: {{ .Values.name }}-front-service
             port:
-              number: 80
+              name: {{ .Values.name }}-front-port
         path: /
         pathType: Prefix
   {{- if .Values.front.ingress.tlsEnabled }}

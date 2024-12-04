@@ -1,0 +1,84 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+  name: {{ .Values.name }}-api-deployment
+  namespace: medhy-dohou
+  labels:
+    app: {{ .Values.name }}-api
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}-api
+  replicas: {{ .Values.api.replicas | int64 }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}-api
+    spec:
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecret }}
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+      containers:
+      - name: api
+        image: {{ .Values.api.container.image }}:{{ .Values.api.container.tag }}
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 2
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 5
+          periodSeconds: 15
+        env:
+        - name: DB_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.name }}-api-config
+              key: db_endpoint
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.name }}-database-config
+              key: POSTGRES_DB
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.name }}-database-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.name }}-database-secret
+              key: POSTGRES_PASSWORD
+        ports:
+        - containerPort: 8080
+          name: {{ .Values.name }}-api-port
+---

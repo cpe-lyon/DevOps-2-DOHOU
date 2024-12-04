@@ -1,0 +1,10 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.name }}-database-config
+  namespace: medhy-dohou
+data:
+  POSTGRES_DB: {{ .Values.db.dbName }}
+  db_path: {{ .Values.db.dbDataPath }}
+---

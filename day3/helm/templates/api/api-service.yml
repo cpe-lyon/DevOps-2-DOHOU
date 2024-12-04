@@ -1,0 +1,15 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}-api-service
+  namespace: medhy-dohou
+spec:
+  selector:
+    app: {{ .Values.name }}-api
+  ports:
+  - name: {{ .Values.name }}-api-port
+    protocol: TCP
+    port: 80
+    targetPort: {{ .Values.name }}-api-port
+---

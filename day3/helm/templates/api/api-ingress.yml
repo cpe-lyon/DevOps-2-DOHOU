@@ -1,0 +1,24 @@
+# https://kubernetes.io/docs/concepts/services-networking/ingress/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.name }}-api-ingress
+  namespace: medhy-dohou
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ .Values.api.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.name }}-api-service
+            port:
+              name: {{ .Values.name }}-api-port
+  tls:
+  - hosts: 
+    - {{ .Values.api.ingress.host }}
+    secretName: app-wildcard
+---

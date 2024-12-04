@@ -1,0 +1,35 @@
+# Default values for CDB app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+# We have only done front for now
+name: cdb
+
+imagePullSecret: takima-school-registry
+
+db:
+  dbName: cdb
+  dbDataPath: /var/lib/postgresql/data/pgdata
+  username: postgres
+  password: securepostgres
+  container:
+    image: registry.takima.io/school/proxy/postgres
+    tag: latest
+
+api:
+  replicas: 1
+  container:
+    image: registry.gitlab.com/takima-school/images/cdb/api
+    tag: latest
+  ingress:
+    tlsEnabled: true
+    host: api.medhy-dohou.cpe.takima.school
+
+front:
+  replicas: 1
+  enabled: true
+  image:
+    repository: registry.gitlab.com/takima-school/images/cdb/www
+    tag: latest
+  ingress:
+    tlsEnabled: true
+    host: www.medhy-dohou.cpe.takima.school

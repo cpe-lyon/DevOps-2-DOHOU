@@ -1,0 +1,9 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.name }}-api-config
+  namespace: medhy-dohou
+data:
+  db_endpoint:  {{ .Values.name }}-database-service.medhy-dohou:5432
+---
