@@ -1,3 +1,6 @@
+# Day 3 - DevOps 2 - Medhy DOHOU - IRC 2025
+Lien github : https://github.com/cpe-lyon/DevOps-2-DOHOU/tree/day3
+
 ## ELK
 
 ### Scale Up : Que constate-t-on ?
@@ -17,3 +20,13 @@ shards shards.undesired write_load.forecast disk.indices.forecast disk.indices d
 ```
 
 3 noeuds apparaissent dans l'allocation.
+
+## ArgoCD
+
+### Pour vérifier que tout fonctionne, essayez de détruire un deployment manuellement dans votre Cluster. Que se passe-t-il ?
+
+Si l'on détruit un déploiement manuellement, ArgoCD le reconstruit dans la foulée pour conserver la synchronisation git Kube.
+
+### Essayez de modifier le values.yaml en augmentant le replicaCount par exemple. Que se passe-t-il ?
+
+ArgoCD augmente automatiquement le nombre de replica dans le déploiement affecté.
